@@ -43,6 +43,8 @@ SkillVault is a single-page console for that collection. It parses every `SKILL.
 | Import / export | Versioned JSON backups with drag-and-drop import, validation preview, and defensive normalization of external files. |
 | Hash routing | Ten `#/...` routes, no router dependency; works from relative paths and inside iframes. |
 
+**🔗 Live demo:** https://webxiongda.github.io/skillvault/
+
 ## Quick Start
 
 ```bash
