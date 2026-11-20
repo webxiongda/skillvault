@@ -51,7 +51,7 @@ cd skillvault && npm install
 npm run dev
 ```
 
-打开终端提示的地址（默认为 `http://localhost:5173`）即可使用。首次运行会自动加载 10 个示例技能。生产构建使用 `npm run build` 与 `npm run preview`。
+打开终端提示的地址（默认为 `http://localhost:5173`）即可使用。首次运行会自动加载 10 个示例技能。生产构建使用 `npm run build` 与 `npm run preview`。测试运行 `npm test`。
 
 技能文件示例：
 

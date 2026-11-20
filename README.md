@@ -51,7 +51,7 @@ cd skillvault && npm install
 npm run dev
 ```
 
-Open the address printed in the terminal (by default `http://localhost:5173`). Ten example skills are loaded on first run. For a production build, run `npm run build` and `npm run preview`.
+Open the address printed in the terminal (by default `http://localhost:5173`). Ten example skills are loaded on first run. For a production build, run `npm run build` and `npm run preview`. Run the test suite with `npm test`.
 
 A skill file looks like this:
 
