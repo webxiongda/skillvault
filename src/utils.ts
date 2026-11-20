@@ -198,3 +198,71 @@ export async function copyText(text: string): Promise<boolean> {
     return false
   }
 }
+
+/** 生成带元信息的 JSON 备份载荷 */
+export function buildExportPayload(skills: Skill[]): string {
+  return JSON.stringify({
+    format: 'skillvault.library',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    count: skills.length,
+    skills,
+  }, null, 2)
+}
+
+/** 校验并规范化外部 JSON 技能数据，非法数据直接给出中文原因 */
+export function normalizeImportedSkills(raw: unknown): Skill[] {
+  const list = Array.isArray(raw)
+    ? raw
+    : raw && typeof raw === 'object' ? (raw as Record<string, unknown>).skills : null
+  if (!Array.isArray(list)) {
+    throw new Error('JSON 结构不正确：应为技能数组，或包含 skills 数组的对象')
+  }
+
+  return list.map((item, index) => {
+    if (!item || typeof item !== 'object') {
+      throw new Error(`第 ${index + 1} 项不是有效的技能对象`)
+    }
+    const source = item as Record<string, unknown>
+    const name = typeof source.name === 'string' ? source.name.trim() : ''
+    if (!name) throw new Error(`第 ${index + 1} 项缺少 name 字段`)
+
+    const description = typeof source.description === 'string' && source.description.trim()
+      ? source.description.trim()
+      : '（导入技能暂无描述）'
+    const categoryValue = typeof source.category === 'string' ? source.category : ''
+    const category: Category = CATEGORIES.includes(categoryValue as Category) ? (categoryValue as Category) : '其他'
+    const allowedTools = Array.isArray(source.allowedTools)
+      ? source.allowedTools.filter((tool): tool is string => typeof tool === 'string' && Boolean(tool.trim()))
+      : []
+    const content = typeof source.content === 'string' && source.content.trim()
+      ? source.content
+      : `---\nname: ${name}\ndescription: ${description}\n---\n\n# ${name}\n`
+
+    return {
+      id: typeof source.id === 'string' && source.id
+        ? source.id
+        : `user-import-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 6)}`,
+      name,
+      description,
+      category,
+      allowedTools,
+      enabled: typeof source.enabled === 'boolean' ? source.enabled : true,
+      source: 'user' as const,
+      content,
+    }
+  })
+}
+
+/** 通过 Blob URL 下载文本文件，使用完立即释放引用 */
+export function downloadText(filename: string, text: string, mime = 'text/plain;charset=utf-8'): void {
+  const blob = new Blob([text], { type: mime })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000)
+}

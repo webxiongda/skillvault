@@ -17,19 +17,21 @@ interface Props {
   enabled: boolean
   isNew: boolean
   copied: boolean
+  showSource?: boolean
+  density?: 'comfortable' | 'compact'
   index: number
   onToggle: () => void
   onOpen: () => void
   onCopy: () => void
 }
 
-export function SkillCard({ skill, enabled, isNew, copied, index, onToggle, onOpen, onCopy }: Props) {
+export function SkillCard({ skill, enabled, isNew, copied, index, showSource = true, density = 'comfortable', onToggle, onOpen, onCopy }: Props) {
   const color = CATEGORY_COLORS[skill.category]
   const style = { '--cat-color': color, animationDelay: `${Math.min(index, 12) * 45}ms` } as CSSProperties
 
   return (
     <article
-      className={`skill-card glass ${enabled ? '' : 'is-disabled'}`}
+      className={`skill-card glass ${enabled ? '' : 'is-disabled'} ${density === 'compact' ? 'compact' : ''}`}
       style={style}
       onClick={onOpen}
       tabIndex={0}
@@ -44,9 +46,11 @@ export function SkillCard({ skill, enabled, isNew, copied, index, onToggle, onOp
     >
       <div className="card-top">
         <div className="card-badges">
-          <span className={`source-badge ${skill.source === 'user' ? 'source-user' : ''}`}>
-            {skill.source === 'built-in' ? '内置' : '自定义'}
-          </span>
+          {showSource && (
+            <span className={`source-badge ${skill.source === 'user' ? 'source-user' : ''}`}>
+              {skill.source === 'built-in' ? '内置' : '自定义'}
+            </span>
+          )}
           {isNew && <span className="new-badge">NEW</span>}
         </div>
         <label className="switch" onClick={(event) => event.stopPropagation()}>
