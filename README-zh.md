@@ -4,7 +4,9 @@
 
 🧰
 
-# SkillVault
+# SkillVault — 本地 Agent Skills 管理器
+
+▶ **[在线体验](https://webxiongda.github.io/skillvault/)** — 无需安装，直接在浏览器里运行。
 
 一个面向 `SKILL.md` 收藏者的 local-first Agent Skills 管理器。解析 frontmatter、整理与启停技能、生成可直接运行的安装脚本——你的技能永远不会离开浏览器。
 
