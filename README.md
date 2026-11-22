@@ -4,7 +4,9 @@
 
 🧰
 
-# SkillVault
+# SkillVault — Local Agent Skills Manager
+
+▶ **[Try it live](https://webxiongda.github.io/skillvault/)** — no install, runs in your browser.
 
 A local-first Agent Skills manager for people who collect `SKILL.md` files. Parse frontmatter, organize and toggle skills, and generate ready-to-run install scripts — your skills never leave the browser.
 
